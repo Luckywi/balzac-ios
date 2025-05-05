@@ -1,5 +1,19 @@
 {
   "appId": "com.lebalzac.app",
   "appName": "Le Balzac",
-  "webDir": "dist"
+  "webDir": "dist",
+  "plugins": {
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    },
+    "FirebaseMessaging": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    }
+  },
+  "ios": {
+    "contentInset": "always"
+  },
+  "server": {
+    "cleartext": true
+  }
 }

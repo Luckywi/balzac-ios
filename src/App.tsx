@@ -1,16 +1,16 @@
-import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { initPushNotifications } from './lib/fcmService';
-import LoginPage from './pages/LoginPage';
-import Dashboard from './pages/Dashboard';
-import ServicesPage from './pages/ServicesPage';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useEffect } from 'react' // Importez useEffect
+import LoginPage from './pages/LoginPage'
+import Dashboard from './pages/Dashboard'
+import ServicesPage from './pages/ServicesPage'
+import { initFCM } from './lib/fcmService' // Ajustez le chemin selon votre structure de fichiers
 
 function App() {
+  // Ajoutez ce hook useEffect pour initialiser FCM au chargement
   useEffect(() => {
-    // Initialiser les notifications push au chargement de l'application
-    initPushNotifications().catch(error => {
-      console.error('Error initializing push notifications:', error);
-    });
+    // Initialisation du service FCM
+    initFCM();
+    // Le tableau vide [] signifie que cela ne s'exécutera qu'une seule fois au montage du composant
   }, []);
 
   return (
@@ -21,7 +21,7 @@ function App() {
         <Route path="/services" element={<ServicesPage />} />
       </Routes>
     </BrowserRouter>
-  );
+  )
 }
 
-export default App;
+export default App

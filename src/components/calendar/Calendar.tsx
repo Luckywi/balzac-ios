@@ -135,26 +135,30 @@ const handleTouchEnd = (e: TouchEvent) => {
   const diffX = touchEndX - touchStartX;
   const diffY = touchEndY - touchStartY;
 
-  // Ne rien faire si le geste est plus vertical qu’horizontal
+  // Ne rien faire si le geste est plus vertical qu'horizontal
   if (Math.abs(diffY) > Math.abs(diffX)) return;
 
   // Ne rien faire si le swipe est trop court (pour éviter les faux positifs)
   if (Math.abs(diffX) < 130) return;
 
-  const direction = diffX > 0 ? 'left' : 'right';
+  // CORRECTED LOGIC HERE:
+  // When swiping right (diffX is positive), we should show the previous period
+  // When swiping left (diffX is negative), we should show the next period
+  const direction = diffX > 0 ? 'right' : 'left';
 
   const newDate = new Date(currentDate);
   const offset = view === 'day' ? 1 : 7;
 
   if (direction === 'right') {
+    // When swiping right, go to the previous period (subtract days)
     newDate.setDate(newDate.getDate() - offset);
   } else {
+    // When swiping left, go to the next period (add days)
     newDate.setDate(newDate.getDate() + offset);
   }
 
   setCurrentDate(newDate);
 };
-
   
     const calendarEl = document.querySelector('.rbc-time-view') || document.querySelector('.rbc-month-view');
     if (calendarEl) {

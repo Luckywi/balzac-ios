@@ -11,7 +11,8 @@
     }
   },
   "ios": {
-    "contentInset": "always"
+    "contentInset": "always",
+    "backgroundColor": "#1F2937"
   },
   "server": {
     "cleartext": true

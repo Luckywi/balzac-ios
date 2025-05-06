@@ -112,6 +112,7 @@ const Calendar: React.FC<{ staffFilter?: string }> = ({ staffFilter }) => {
   const [view, setView] = useState<ViewKey>('week');
   const [newRdvDate, setNewRdvDate] = useState<Date | null>(null);
   const [isCreatingRdv, setIsCreatingRdv] = useState(false);
+  const [defaultView, setDefaultView] = useState<ViewKey>('week');
 
 
   // États pour la configuration du salon et des coiffeurs
@@ -122,6 +123,9 @@ const Calendar: React.FC<{ staffFilter?: string }> = ({ staffFilter }) => {
   useEffect(() => {
     let touchStartX = 0;
 let touchStartY = 0;
+
+
+
 
 const handleTouchStart = (e: TouchEvent) => {
   touchStartX = e.changedTouches[0].screenX;
@@ -174,6 +178,32 @@ const handleTouchEnd = (e: TouchEvent) => {
     };
   }, [currentDate, view]);
   
+
+  useEffect(() => {
+    const handleResize = () => {
+      // Considère qu'un appareil mobile a généralement une largeur inférieure à 768px
+      if (window.innerWidth < 768) {
+        setDefaultView('day');
+        // Si la vue actuelle est 'week', basculer vers 'day'
+        if (view === 'week') {
+          setView('day');
+        }
+      } else {
+        setDefaultView('week');
+      }
+    };
+  
+    // Exécuter la vérification au chargement initial
+    handleResize();
+  
+    // Ajouter un écouteur d'événement pour les changements de taille d'écran
+    window.addEventListener('resize', handleResize);
+  
+    // Nettoyage
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [view]);
 
 
   // Récupérer les rendez-vous depuis Firestore
@@ -606,7 +636,7 @@ const handleTouchEnd = (e: TouchEvent) => {
         startAccessor="start"
         endAccessor="end"
         selectable
-        defaultView={Views.WEEK}
+        defaultView={defaultView}
         dayLayoutAlgorithm="no-overlap"
         onSelectSlot={handleSelectSlot}
         onSelectEvent={handleSelectEvent}
